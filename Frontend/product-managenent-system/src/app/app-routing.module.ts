@@ -1,4 +1,3 @@
-// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
@@ -15,7 +14,7 @@ const routes: Routes = [
   { path: 'main', component: MainComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'create-product', component: CreateProductComponent },
-  { path: 'edit-product/:id', component: EditProductComponent },
+  { path: 'edit-product/:id', component: EditProductComponent }
 ];
 
 @NgModule({
