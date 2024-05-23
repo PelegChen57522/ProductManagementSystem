@@ -1,0 +1,19 @@
+.main-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .main-container .links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .main-container .links a {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  

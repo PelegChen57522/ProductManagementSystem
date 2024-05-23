@@ -1,0 +1,10 @@
+<div class="products-container">
+    <h2>Products</h2>
+    <ul>
+      <li *ngFor="let product of products">
+        {{ product.name }} - <a [routerLink]="['/products/edit', product.id]">Edit</a>
+      </li>
+    </ul>
+    <a routerLink="/main">Back to Main</a>
+  </div>
+  
