@@ -1,12 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProductService } from '../services/product.service';
+import { Product } from '../models/product';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
-  standalone: true,
-  imports: [],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.css'
+  styleUrls: ['./products.component.css']
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
+  products: Product[] = [];
 
+  constructor(private productService: ProductService, private router: Router) { }
+
+  ngOnInit(): void {
+    this.productService.getProducts().subscribe(
+      (data: Product[]) => {
+        this.products = data;
+      },
+      error => {
+        console.error('Error fetching products', error);
+      }
+    );
+  }
+
+  editProduct(id: string): void {
+    this.router.navigate([`/products/edit/${id}`]);
+  }
 }
