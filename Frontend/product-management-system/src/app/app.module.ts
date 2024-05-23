@@ -4,15 +4,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-// Import standalone components
+// Import components
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { MainComponent } from './main/main.component';
-import { ProductsComponent } from './products/products.component';
-import { CreateProductComponent } from './products/create-product/create-product.component';
-import { EditProductComponent } from './products/edit-product/edit-product.component';
 
 @NgModule({
+  declarations: [
+    LoginComponent,
+    RegisterComponent,
+  ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
@@ -21,12 +21,12 @@ import { EditProductComponent } from './products/edit-product/edit-product.compo
     RouterModule.forRoot([
       { path: '', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: 'main', component: MainComponent },
-      { path: 'products', component: ProductsComponent },
-      { path: 'products/create', component: CreateProductComponent },
-      { path: 'products/edit/:id', component: EditProductComponent }
+      { path: 'main', loadComponent: () => import('./main/main.component').then(m => m.MainComponent) },
+      { path: 'products', loadComponent: () => import('./products/products.component').then(m => m.ProductsComponent) },
+      { path: 'products/create', loadComponent: () => import('./products/create-product/create-product.component').then(m => m.CreateProductComponent) },
+      { path: 'products/edit/:id', loadComponent: () => import('./products/edit-product/edit-product.component').then(m => m.EditProductComponent) }
     ])
   ],
-  providers: []
+  providers: [],
 })
 export class AppModule { }
