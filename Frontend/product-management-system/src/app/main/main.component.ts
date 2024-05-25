@@ -1,12 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-main',
-  standalone: true,
-  imports: [],
   templateUrl: './main.component.html',
-  styleUrl: './main.component.css'
+  styleUrls: ['./main.component.css']
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
 
+  userDetails: any;
+  userProducts: any[] = [];
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.getUserDetails().subscribe(
+      (data: any) => {
+        this.userDetails = data;
+      },
+      (error: any) => {
+        console.error('Error fetching user details', error);
+      }
+    );
+
+    this.authService.getUserProducts().subscribe(
+      (products: any[]) => {
+        this.userProducts = products;
+      },
+      (error: any) => {
+        console.error('Error fetching user products', error);
+      }
+    );
+  }
+
+  createProduct(): void {
+    // Implement your create product logic here
+  }
+
+  editProduct(productId: number): void {
+    // Implement your edit product logic here
+  }
 }

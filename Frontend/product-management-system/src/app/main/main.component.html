@@ -1,1 +1,14 @@
-<p>main works!</p>
+<div class="main-container">
+    <h2>Hello {{ userDetails.firstName }} {{ userDetails.lastName }}!</h2>
+    <div class="products">
+      <h3>Your Products</h3>
+      <ul>
+        <li *ngFor="let product of userProducts">
+          {{ product.name }} - {{ product.price.amount }} {{ product.price.currency }}
+          <button (click)="editProduct(product.id)">Edit</button>
+        </li>
+      </ul>
+    </div>
+    <button (click)="createProduct()">Create</button>
+  </div>
+  

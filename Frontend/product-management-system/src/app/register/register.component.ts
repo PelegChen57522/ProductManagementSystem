@@ -1,42 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  imports: [ReactiveFormsModule, CommonModule]
 })
-export class RegisterComponent implements OnInit {
-  registerForm!: FormGroup; // Using '!' to assert that it will be initialized
+export class RegisterComponent {
+  registerForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: [''],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
     });
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe(
-        response => {
-          this.router.navigate(['/']);
-        },
-        error => {
-          console.error('Registration failed', error);
-        }
-      );
+      console.log(this.registerForm.value);
+      // Add your register logic here
     }
   }
 }

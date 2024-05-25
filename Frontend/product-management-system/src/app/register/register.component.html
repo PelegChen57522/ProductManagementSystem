@@ -1,17 +1,20 @@
-<div class="register-container">
-    <h2>Register</h2>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <label for="firstName">First Name</label>
-      <input type="text" id="firstName" formControlName="firstName">
-      <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" formControlName="lastName">
-      <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email">
-      <label for="phone">Phone</label>
-      <input type="text" id="phone" formControlName="phone">
-      <label for="password">Password</label>
-      <input type="password" id="password" formControlName="password">
-      <button type="submit">Register</button>
-    </form>
-  </div>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="firstName">First Name:</label>
+      <input id="firstName" formControlName="firstName" type="text">
+    </div>
+    <div>
+      <label for="lastName">Last Name:</label>
+      <input id="lastName" formControlName="lastName" type="text">
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email">
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input id="password" formControlName="password" type="password">
+    </div>
+    <button type="submit">Register</button>
+  </form>
   
