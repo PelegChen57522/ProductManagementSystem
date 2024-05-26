@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../interfaces/product.interface';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-create',
-  templateUrl: './product-create.component.html'
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, RouterModule],
+  templateUrl: './product-create.component.html',
+  styleUrls: ['./product-create.component.css']
 })
 export class ProductCreateComponent {
   productForm: FormGroup;
@@ -48,5 +54,9 @@ export class ProductCreateComponent {
         error => console.error('Product creation failed', error)
       );
     }
+  }
+
+  onCancel(): void {
+    this.router.navigate(['/main']);
   }
 }

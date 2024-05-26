@@ -18,16 +18,29 @@ export function app(): express.Express {
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
-  server.use('/api', express.static(browserDistFolder, {
+  server.use(express.static(browserDistFolder, {
     maxAge: '1y',
     index: false,
   }));
 
+  // API routes
+  server.get('/api/products/user/:userId', (req, res) => {
+    const { userId } = req.params;
+    // Mock data, replace with actual database query
+    const products = [
+      {
+        pid: '1',
+        name: 'Product 1',
+        price: { amount: '100', currency: 'USD' },
+        size: { height: 10, width: 20, weight: 30, measurement: 'cm' }
+      }
+    ];
+    res.json(products);
+  });
+
   // All regular routes use the Angular engine
-  server.get('**', (req, res, next) => {
+  server.get('/*', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine

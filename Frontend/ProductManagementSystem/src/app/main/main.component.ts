@@ -18,8 +18,7 @@ export class MainComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    // Fetch user products (replace with actual user ID)
-    const userId = 'currentUserId';
+    const userId = 'currentUserId'; // Replace with actual user ID logic
     this.productService.getProductsByUser(userId).subscribe(
       (products) => {
         this.products = products;

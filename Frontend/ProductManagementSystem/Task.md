@@ -1,11 +1,11 @@
 Job interview
 Requirements
 Machine requirements:
-Git - github 
+Git - github
 Node - web application.
 Docker - DB - postgresql.
 Angular - Application.
-.net - Server. 
+.net - Server.
 
 GCP - Google Cloud Platform.
 
@@ -13,7 +13,7 @@ Webstorm - web.
 Rider - .net
 
 Links
-AI: 
+AI:
 https://www.phind.com/agent?home=true
 https://chat.openai.com/
 https://bard.google.com/chat
@@ -34,7 +34,6 @@ Products.
 Create.
 Edit.
 
-
 UI
 BL
 DAL,DAL2
@@ -52,7 +51,6 @@ CreateDate: Date;
 LastConnection:Date;
 Address:string(Optional);
 
-
 Price
 Amount:string;
 Currency:string;
@@ -68,4 +66,3 @@ Pid:string;
 Name:string;
 Price:Price;
 Size:Size;
-

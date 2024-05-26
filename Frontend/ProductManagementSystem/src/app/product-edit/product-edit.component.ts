@@ -4,11 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../interfaces/product.interface';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule, RouterModule],
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css']
 })
@@ -19,8 +21,8 @@ export class ProductEditComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -36,7 +38,7 @@ export class ProductEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.productService.getProductById(this.productId).subscribe(
-      product => {
+      (product: Product) => {
         this.productForm.patchValue({
           name: product.name,
           amount: product.price.amount,
@@ -47,7 +49,7 @@ export class ProductEditComponent implements OnInit {
           measurement: product.size.measurement
         });
       },
-      error => console.error('Failed to load product', error)
+      (error: any) => console.error('Failed to load product', error)
     );
   }
 
@@ -69,7 +71,7 @@ export class ProductEditComponent implements OnInit {
       };
       this.productService.updateProduct(product).subscribe(
         () => this.router.navigate(['/main']),
-        error => console.error('Product update failed', error)
+        (error: any) => console.error('Product update failed', error)
       );
     }
   }

@@ -1,12 +1,14 @@
 <div>
-    <h2>Products</h2>
-    <div *ngFor="let product of products">
-      <div>
-        <h3>{{ product.name }}</h3>
-        <p>{{ product.price.amount }} {{ product.price.currency }}</p>
-        <p>{{ product.size.height }} x {{ product.size.width }} x {{ product.size.weight }} {{ product.size.measurement }}</p>
-        <a [routerLink]="['/main/edit', product.pid]">Edit</a>
-      </div>
+  <h2>Products</h2>
+  <div *ngFor="let product of products">
+    <div>
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.price.amount }} {{ product.price.currency }}</p>
+      <p>
+        {{ product.size.height }} x {{ product.size.width }} x
+        {{ product.size.weight }} {{ product.size.measurement }}
+      </p>
+      <a [routerLink]="['/main/edit', product.pid]">Edit</a>
     </div>
   </div>
-  
+</div>
