@@ -68,3 +68,4 @@ Pid:string;
 Name:string;
 Price:Price;
 Size:Size;
+

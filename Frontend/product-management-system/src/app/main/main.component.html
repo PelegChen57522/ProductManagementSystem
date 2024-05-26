@@ -1,14 +1,11 @@
-<div class="main-container">
-    <h2>Hello {{ userDetails.firstName }} {{ userDetails.lastName }}!</h2>
-    <div class="products">
-      <h3>Your Products</h3>
-      <ul>
-        <li *ngFor="let product of userProducts">
-          {{ product.name }} - {{ product.price.amount }} {{ product.price.currency }}
-          <button (click)="editProduct(product.id)">Edit</button>
-        </li>
-      </ul>
+<div>
+    <h1>Welcome to the Product Management System</h1>
+    <button routerLink="/products/create">Create New Product</button>
+    <div *ngFor="let product of userProducts">
+      <h2>{{ product.name }}</h2>
+      <p>Price: {{ product.price.amount }} {{ product.price.currency }}</p>
+      <p>Size: {{ product.size.height }}x{{ product.size.width }}x{{ product.size.weight }} {{ product.size.measurement }}</p>
+      <button [routerLink]="['/products/edit', product.pid]">Edit</button>
     </div>
-    <button (click)="createProduct()">Create</button>
   </div>
   

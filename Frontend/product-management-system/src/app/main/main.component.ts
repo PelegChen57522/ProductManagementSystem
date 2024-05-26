@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-main',
@@ -7,37 +7,13 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-
-  userDetails: any;
   userProducts: any[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(private productService: ProductService) {}
 
-  ngOnInit(): void {
-    this.authService.getUserDetails().subscribe(
-      (data: any) => {
-        this.userDetails = data;
-      },
-      (error: any) => {
-        console.error('Error fetching user details', error);
-      }
-    );
-
-    this.authService.getUserProducts().subscribe(
-      (products: any[]) => {
-        this.userProducts = products;
-      },
-      (error: any) => {
-        console.error('Error fetching user products', error);
-      }
-    );
-  }
-
-  createProduct(): void {
-    // Implement your create product logic here
-  }
-
-  editProduct(productId: number): void {
-    // Implement your edit product logic here
+  ngOnInit() {
+    this.productService.getProducts().subscribe(products => {
+      this.userProducts = products;
+    });
   }
 }

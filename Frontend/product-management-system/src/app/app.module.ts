@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { importProvidersFrom } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -15,12 +13,10 @@ import { EditProductComponent } from './products/edit-product/edit-product.compo
 
 @NgModule({
   declarations: [
-    MainComponent,
-    ProductsComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,15 +26,9 @@ import { EditProductComponent } from './products/edit-product/edit-product.compo
       { path: 'products', component: ProductsComponent },
       { path: 'products/create', component: CreateProductComponent },
       { path: 'products/edit/:id', component: EditProductComponent }
-    ]),
+    ])
   ],
   providers: [],
-  bootstrap: []
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(BrowserModule, FormsModule, ReactiveFormsModule, RouterModule)
-  ]
-});

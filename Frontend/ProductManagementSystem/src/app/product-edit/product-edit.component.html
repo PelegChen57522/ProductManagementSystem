@@ -1,0 +1,21 @@
+<div>
+    <h2>Edit Product</h2>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <label>Name:</label>
+      <input formControlName="name" type="text" required>
+      <label>Amount:</label>
+      <input formControlName="amount" type="text" required>
+      <label>Currency:</label>
+      <input formControlName="currency" type="text" required>
+      <label>Height:</label>
+      <input formControlName="height" type="number" required>
+      <label>Width:</label>
+      <input formControlName="width" type="number" required>
+      <label>Weight:</label>
+      <input formControlName="weight" type="number" required>
+      <label>Measurement:</label>
+      <input formControlName="measurement" type="text" required>
+      <button type="submit">Update</button>
+    </form>
+  </div>
+  

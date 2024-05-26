@@ -1,1 +1,19 @@
-<p>create-product works!</p>
+<form [formGroup]="createProductForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Product Name:</label>
+      <input id="name" type="text" formControlName="name">
+    </div>
+  
+    <div>
+      <label for="price">Price:</label>
+      <input id="price" type="number" formControlName="price">
+    </div>
+  
+    <div>
+      <label for="currency">Currency:</label>
+      <input id="currency" type="text" formControlName="currency">
+    </div>
+  
+    <button type="submit">Create Product</button>
+  </form>
+  
