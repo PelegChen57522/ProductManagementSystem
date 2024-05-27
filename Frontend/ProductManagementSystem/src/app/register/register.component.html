@@ -25,6 +25,9 @@
         <input id="address" formControlName="address" type="text" />
       </div>
       <button type="submit" class="btn">Register</button>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
     </form>
   </div>
   

@@ -24,7 +24,6 @@ CreateDate: Date;
 LastConnection:Date;
 Address:string(Optional);
 
-
 Price
 Amount:string;
 Currency:string;
@@ -42,9 +41,9 @@ Price:Price;
 Size:Size;
 
 Very important:
-**The first screen is the Login page.                                                                
-**If the user doesn't has account, the user click on Register and move to the Register Page.                                                                                                                  **On succesfuly login the user move to the Main page- in the Main page the user see all his products.                                                                                 
+**The first screen is the Login page.  
+**If the user doesn't has account, the user click on Register and move to the Register Page. **On succesfuly login the user move to the Main page- in the Main page the user see all his products.  
 **There is a "Create" click to create new product.
-**Every product get a square, and an option to edit this current product.
+\*\*Every product get a square, and an option to edit this current product.
 
 notice: I have an app.config.ts instead of app.module.ts and app.routes.ts instead of app-routing.module.ts

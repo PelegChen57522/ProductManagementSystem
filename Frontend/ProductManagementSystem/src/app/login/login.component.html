@@ -1,15 +1,19 @@
 <div class="login-container">
-  <h5>Product Management System</h5>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input id="email" formControlName="email" type="email" />
+    <h5>Product Management System</h5>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" formControlName="email" type="email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input id="password" formControlName="password" type="password" />
+      </div>
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <a class="btn" routerLink="/register">Register</a>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
     </div>
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input id="password" formControlName="password" type="password" />
-    </div>
-    <button type="submit" class="btn">Login</button>
-  </form>
-  <a class="btn" routerLink="/register">Register</a>
-</div>
+  </div>
+  

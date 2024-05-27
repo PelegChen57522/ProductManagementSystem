@@ -1,19 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { User } from '../interfaces/user.interface';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
+  constructor(private auth: Auth, private router: Router) {}
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post('/api/login', { email, password });
+  async register(email: string, password: string) {
+    const signInMethods = await fetchSignInMethodsForEmail(this.auth, email);
+    if (signInMethods.length > 0) {
+      throw new Error('Email already in use');
+    }
+    return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  register(user: User): Observable<any> {
-    return this.http.post('/api/register', user);
+  login(email: string, password: string) {
+    return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+  logout() {
+    return this.auth.signOut().then(() => {
+      this.router.navigate(['/login']);
+    });
   }
 }

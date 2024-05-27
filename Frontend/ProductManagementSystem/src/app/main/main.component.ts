@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ProductListComponent } from '../product-list/product-list.component';
 import { ProductService } from '../services/product.service';
+import { AuthService } from '../services/auth.service';
 import { Product } from '../interfaces/product.interface';
 
 @Component({
@@ -15,7 +16,7 @@ import { Product } from '../interfaces/product.interface';
 export class MainComponent implements OnInit {
   products: Product[] = [];
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     const userId = 'currentUserId'; // Replace with actual user ID logic
@@ -25,5 +26,13 @@ export class MainComponent implements OnInit {
       },
       (error) => console.error('Failed to load products', error)
     );
+  }
+
+  logout(): void {
+    this.authService.logout().then(() => {
+      this.router.navigate(['/login']);
+    }).catch(error => {
+      console.error('Logout failed', error);
+    });
   }
 }
