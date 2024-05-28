@@ -1,29 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private baseUrl = '/api/products';
+  private baseUrl = 'http://localhost:5000/api/products'; // Update this to your backend URL
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(`${this.baseUrl}`, product);
+  getProducts(): Observable<any> {
+    return this.http.get(this.baseUrl);
   }
 
-  getProductsByUser(userId: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.baseUrl}/user/${userId}`);
+  createProduct(product: any): Observable<any> {
+    return this.http.post(this.baseUrl, product);
   }
 
-  getProductById(productId: string): Observable<Product> {
-    return this.http.get<Product>(`${this.baseUrl}/${productId}`);
+  updateProduct(id: string, product: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, product);
   }
 
-  updateProduct(product: Product): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${product.pid}`, product);
+  deleteProduct(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }
