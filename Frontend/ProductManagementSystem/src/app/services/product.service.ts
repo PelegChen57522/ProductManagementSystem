@@ -9,7 +9,7 @@ import { getIdToken } from '@angular/fire/auth';
   providedIn: 'root'
 })
 export class ProductService {
-  private baseUrl = 'http://localhost:5110/api/products';
+  private baseUrl = 'http://localhost:5244/api/products';
 
   constructor(private http: HttpClient, private auth: Auth) { }
 
