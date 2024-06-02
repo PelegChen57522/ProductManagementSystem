@@ -18,14 +18,19 @@ export class MainComponent implements OnInit {
 
   constructor(private productService: ProductService, private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-    const userId = 'currentUserId'; // Replace with actual user ID logic
-    this.productService.getProducts().subscribe(
-      (products) => {
-        this.products = products;
-      },
-      (error) => console.error('Failed to load products', error)
-    );
+  async ngOnInit(): Promise<void> {
+    try {
+      const productsObservable = await this.productService.getProducts();
+      productsObservable.subscribe(
+        (products: Product[]) => {
+          this.products = products;
+        },
+        (error: any) => console.error('Failed to load products', error)
+      );
+    } catch (error) {
+      console.error('User is not authenticated', error);
+      this.router.navigate(['/login']);
+    }
   }
 
   logout(): void {

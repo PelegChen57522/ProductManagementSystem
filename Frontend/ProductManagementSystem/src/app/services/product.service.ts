@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, from, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Product } from '../interfaces/product.interface';
 import { Auth } from '@angular/fire/auth';
 import { getIdToken } from '@angular/fire/auth';
 
@@ -8,7 +9,7 @@ import { getIdToken } from '@angular/fire/auth';
   providedIn: 'root'
 })
 export class ProductService {
-  private baseUrl = 'http://localhost:5244/api/products'; // Update this to your backend URL
+  private baseUrl = 'http://localhost:5110/api/products';
 
   constructor(private http: HttpClient, private auth: Auth) { }
 
@@ -23,27 +24,23 @@ export class ProductService {
     });
   }
 
-  getProducts(): Promise<Observable<any>> {
-    return this.getAuthHeaders()
-      .then(headers => this.http.get(this.baseUrl, { headers }))
-      .catch(error => throwError(() => new Error(error)));
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.baseUrl);
   }
 
-  createProduct(product: any): Promise<Observable<any>> {
-    return this.getAuthHeaders()
-      .then(headers => this.http.post(this.baseUrl, product, { headers }))
-      .catch(error => throwError(() => new Error(error)));
+  getProductById(id: string): Observable<Product> {
+    return this.http.get<Product>(`${this.baseUrl}/${id}`);
   }
 
-  updateProduct(id: string, product: any): Promise<Observable<any>> {
-    return this.getAuthHeaders()
-      .then(headers => this.http.put(`${this.baseUrl}/${id}`, product, { headers }))
-      .catch(error => throwError(() => new Error(error)));
+  createProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.baseUrl, product);
   }
 
-  deleteProduct(id: string): Promise<Observable<any>> {
-    return this.getAuthHeaders()
-      .then(headers => this.http.delete(`${this.baseUrl}/${id}`, { headers }))
-      .catch(error => throwError(() => new Error(error)));
+  updateProduct(id: string, product: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.baseUrl}/${id}`, product);
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

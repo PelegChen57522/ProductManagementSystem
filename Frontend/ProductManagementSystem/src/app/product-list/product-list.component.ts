@@ -1,25 +1,27 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ProductService } from '../services/product.service';
+import { Product } from '../interfaces/product.interface';
 
 @Component({
   selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './product-list.component.html'
 })
 export class ProductListComponent implements OnInit {
-  products: any[] = [];
+  products: Product[] = [];
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   async ngOnInit(): Promise<void> {
-    try {
-      const getProducts$ = await this.productService.getProducts();
-      getProducts$.subscribe(
-        (products) => this.products = products,
-        (error) => console.error('Failed to fetch products', error)
-      );
-    } catch (error) {
-      console.error('Failed to fetch products', error);
-    }
+    const productsObservable = await this.productService.getProducts();
+    productsObservable.subscribe(
+      (products: Product[]) => {
+        this.products = products;
+      },
+      (error: any) => console.error('Failed to load products', error)
+    );
   }
 }

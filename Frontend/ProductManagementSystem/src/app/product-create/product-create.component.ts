@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
+import { Product } from '../interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -33,7 +34,8 @@ export class ProductCreateComponent {
 
   async onSubmit(): Promise<void> {
     if (this.productForm.valid) {
-      const product = {
+      const product: Product = {
+        pid: '', // Generate or assign a unique ID
         name: this.productForm.value.name,
         price: {
           amount: this.productForm.value.amount,
@@ -47,7 +49,7 @@ export class ProductCreateComponent {
         }
       };
       try {
-        const createProduct$ = await this.productService.createProduct(product);
+        const createProduct$ = this.productService.createProduct(product);
         createProduct$.subscribe(
           () => this.router.navigate(['/main']),
           (error: any) => console.error('Product creation failed', error)
