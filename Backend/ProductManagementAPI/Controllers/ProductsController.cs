@@ -1,68 +1,61 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProductManagementAPI.Data;
 using ProductManagementAPI.Models;
-using ProductManagementAPI.Services;
-using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ProductManagementAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductService _productService;
+        private readonly ProductManagementContext _context;
 
-        public ProductsController(ProductService productService)
+        public ProductsController(ProductManagementContext context)
         {
-            _productService = productService;
+            _context = context;
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
-            var userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var products = await _productService.GetProductsByUserId(new Guid(userId));
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var products = await _context.Products.Where(p => p.UserId == userId).ToListAsync();
             return Ok(products);
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> CreateProduct([FromBody] Product product)
+        public async Task<IActionResult> CreateProduct(Product product)
         {
-            var userId = User.Claims.First(c => c.Type == "UserID").Value;
-            product.UserId = new Guid(userId);
-            var result = await _productService.CreateProduct(product);
-            if (!result.Success)
-                return BadRequest(result.Message);
-
-            return Ok(result);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            product.UserId = userId;
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+            return Ok(product);
         }
 
         [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] Product product)
+        public async Task<IActionResult> UpdateProduct(string id, Product product)
         {
-            var userId = User.Claims.First(c => c.Type == "UserID").Value;
-            product.UserId = new Guid(userId);
-            var result = await _productService.UpdateProduct(id, product);
-            if (!result.Success)
-                return BadRequest(result.Message);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Pid == id && p.UserId == userId);
+            if (existingProduct == null)
+            {
+                return NotFound();
+            }
 
-            return Ok(result);
-        }
+            existingProduct.Name = product.Name;
+            existingProduct.Price = product.Price;
+            existingProduct.Size = product.Size;
 
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteProduct(Guid id)
-        {
-            var result = await _productService.DeleteProduct(id);
-            if (!result.Success)
-                return BadRequest(result.Message);
-
-            return Ok(result);
+            _context.Products.Update(existingProduct);
+            await _context.SaveChangesAsync();
+            return Ok(existingProduct);
         }
     }
 }

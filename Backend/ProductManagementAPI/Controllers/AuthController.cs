@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagementAPI.Models;
-using ProductManagementAPI.Services;
 using System.Threading.Tasks;
 
 namespace ProductManagementAPI.Controllers
@@ -9,47 +9,63 @@ namespace ProductManagementAPI.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _authService;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AuthController(AuthService authService)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            _authService = authService;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserRegisterRequest request)
+        public async Task<IActionResult> Register(RegisterModel model)
         {
             var user = new User
             {
-                Email = request.Email,
-                Password = request.Password,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Phone = request.Phone,
-                Address = request.Address
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Phone = model.Phone,
+                Address = model.Address
             };
-            
-            var response = await _authService.Register(user);
-            if (!response.Success)
-                return BadRequest(response.Message);
 
-            return Ok(response);
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserLoginRequest request)
+        public async Task<IActionResult> Login(LoginModel model)
         {
-            var userLogin = new UserLogin
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            if (result.Succeeded)
             {
-                Email = request.Email,
-                Password = request.Password
-            };
-            
-            var response = await _authService.Login(userLogin);
-            if (!response.Success)
-                return BadRequest(response.Message);
+                return Ok();
+            }
 
-            return Ok(response);
+            return Unauthorized();
         }
+    }
+
+    public class RegisterModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Phone { get; set; }
+        public string? Address { get; set; }
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

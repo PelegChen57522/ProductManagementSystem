@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
-import { Product } from '../interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -11,8 +10,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-product-create',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule, RouterModule],
-  templateUrl: './product-create.component.html',
-  styleUrls: ['./product-create.component.css']
+  templateUrl: './product-create.component.html'
 })
 export class ProductCreateComponent {
   productForm: FormGroup;
@@ -33,10 +31,9 @@ export class ProductCreateComponent {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.productForm.valid) {
-      const product: Product = {
-        pid: '', // This will be set by the backend
+      const product = {
         name: this.productForm.value.name,
         price: {
           amount: this.productForm.value.amount,
@@ -49,10 +46,15 @@ export class ProductCreateComponent {
           measurement: this.productForm.value.measurement
         }
       };
-      this.productService.createProduct(product).subscribe(
-        () => this.router.navigate(['/main']),
-        error => console.error('Product creation failed', error)
-      );
+      try {
+        const createProduct$ = await this.productService.createProduct(product);
+        createProduct$.subscribe(
+          () => this.router.navigate(['/main']),
+          (error: any) => console.error('Product creation failed', error)
+        );
+      } catch (error) {
+        console.error('Product creation failed', error);
+      }
     }
   }
 

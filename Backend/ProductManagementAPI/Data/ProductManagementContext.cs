@@ -1,36 +1,33 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProductManagementAPI.Models;
 
 namespace ProductManagementAPI.Data
 {
-    public class ProductManagementContext : DbContext
+    public class ProductManagementContext : IdentityDbContext<User>
     {
         public ProductManagementContext(DbContextOptions<ProductManagementContext> options)
             : base(options)
         {
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Price> Prices { get; set; }
+        public DbSet<Size> Sizes { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<Product>().ToTable("Products");
+            base.OnModelCreating(builder);
 
-            modelBuilder.Entity<Product>()
-                .HasKey(p => p.Pid);
+            builder.Entity<User>().HasKey(u => u.Id);
+            builder.Entity<Product>().HasKey(p => p.Pid);
+            builder.Entity<Price>().HasKey(pr => pr.PriceId);
+            builder.Entity<Size>().HasKey(s => s.SizeId);
 
-            modelBuilder.Entity<Product>()
+            builder.Entity<Product>()
                 .HasOne(p => p.User)
-                .WithMany(u => u.Products)
+                .WithMany()
                 .HasForeignKey(p => p.UserId);
-
-            modelBuilder.Entity<Product>()
-                .OwnsOne(p => p.Price);
-
-            modelBuilder.Entity<Product>()
-                .OwnsOne(p => p.Size);
         }
     }
 }

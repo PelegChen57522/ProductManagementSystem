@@ -20,7 +20,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     const userId = 'currentUserId'; // Replace with actual user ID logic
-    this.productService.getProductsByUser(userId).subscribe(
+    this.productService.getProducts().subscribe(
       (products) => {
         this.products = products;
       },

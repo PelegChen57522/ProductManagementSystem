@@ -1,13 +1,11 @@
 version: '3.8'
-
 services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres
+  db:
+    image: postgres:13
     environment:
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_password
       POSTGRES_DB: product_management_db
+      POSTGRES_USER: PelegChen57522
+      POSTGRES_PASSWORD: pkdji123
     ports:
       - "5432:5432"
     volumes:
